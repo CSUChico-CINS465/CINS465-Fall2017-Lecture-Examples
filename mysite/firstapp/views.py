@@ -4,4 +4,9 @@ from django.http import HttpResponse
 
 # Create your views here.
 def index(request):
-    return HttpResponse("Hello World")
+    context = {"variable":"index page"}
+    return render(request,"default.html",context)
+
+def page2(request):
+    context = {"variable":"page2"}
+    return render(request,"default.html",context)
