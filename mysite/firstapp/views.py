@@ -8,5 +8,5 @@ def index(request):
     return render(request,"default.html",context)
 
 def page2(request):
-    context = {"variable":"page2"}
+    context = {"variable":'page 2'}
     return render(request,"default.html",context)
