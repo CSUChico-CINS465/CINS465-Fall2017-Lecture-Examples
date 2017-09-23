@@ -1,8 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from django.http import HttpResponse
 from .models import *
 from .forms import *
+
+# from django.contrib.auth.forms import UserCreationForm
 
 # Create your views here.
 def index(request):
@@ -24,3 +26,14 @@ def page2(request):
         toReturn += sugg.suggestion + " "
     context = {"variable":toReturn}
     return render(request,"default.html",context)
+
+def register(request):
+    if request.method == 'POST':
+        form = registration_form(request.POST)
+        if form.is_valid():
+            form.save(commit=True)
+            return redirect("/")
+    else:
+        form = registration_form()
+    context = {"form":form}
+    return render(request,"register.html",context)

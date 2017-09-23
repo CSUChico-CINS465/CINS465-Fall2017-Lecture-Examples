@@ -2,9 +2,16 @@
 
 {% block title %}Title{% endblock %}
 {% block content %}
+<ul>
+{% if user.is_authenticated %}
+<li><a href="/logout/">Logout {{ user.username }}</a></li>
+{% else %}
+<li><a href="/login/">Log In</a></li>
+{% endif %}
+</ul>
 <form action="/" method="post">
     {% csrf_token %}
-    
+
     {{ form }}
     <input type="submit" value="Submit" />
 </form>
