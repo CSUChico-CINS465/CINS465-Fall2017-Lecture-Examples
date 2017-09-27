@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from .models import *
 from .forms import *
 
@@ -37,3 +37,11 @@ def register(request):
         form = registration_form()
     context = {"form":form}
     return render(request,"register.html",context)
+
+def suggestions(request):
+    suggestions = suggestion.objects.all()
+    toReturn = {}
+    toReturn["suggestions"]=[]
+    for sugg in suggestions:
+        toReturn["suggestions"]+=[{"suggest":sugg.suggestion}]
+    return JsonResponse(toReturn)
