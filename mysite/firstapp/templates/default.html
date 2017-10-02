@@ -10,12 +10,16 @@
 <li><a href="/login/">Log In</a></li>
 {% endif %}
 </ul>
+{% if user.is_authenticated %}
 <form action="/" method="post">
     {% csrf_token %}
 
     {{ form }}
+
     <input type="submit" value="Submit" />
+
 </form>
+{% endif %}
 <div id="app">
   <ul>
     <li v-for="suggestion in suggestions">
