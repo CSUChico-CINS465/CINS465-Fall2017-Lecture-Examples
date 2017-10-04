@@ -8,16 +8,29 @@ from .forms import *
 
 # Create your views here.
 def index(request):
-    if request.method == 'POST':
-        form = suggestion_form(request.POST)
-        if form.is_valid():
-            modentry = suggestion(suggestion=form.cleaned_data['suggestion'])
-            modentry.save()
-    else:
-        form = suggestion_form()
-    suggestions = suggestion.objects.all()
+    form = suggestion_form()
+    suggestions = suggestion.objects.all().order_by('-authored')
     context = {"variable":suggestions, "form":form}
     return render(request,"default.html",context)
+
+def suggest(request):
+    if request.method == 'POST':
+        if request.user.is_authenticated:
+            form = suggestion_form(request.POST)
+            if form.is_valid():
+                modentry = suggestion(
+                    suggestion=form.cleaned_data['suggestion'],
+                    author=request.user
+                    )
+                modentry.save()
+        else:
+            form=suggestion_form()
+    else:
+        form = suggestion_form()
+    suggestions = suggestion.objects.all().order_by('-authored')
+    context = {"variable":suggestions, "form":form}
+    return render(request,"default.html",context)
+
 
 def page2(request):
     suggestions = suggestion.objects.all()
@@ -39,7 +52,7 @@ def register(request):
     return render(request,"register.html",context)
 
 def suggestions(request):
-    suggestions = suggestion.objects.all()
+    suggestions = suggestion.objects.all().order_by('authored')
     toReturn = {}
     toReturn["suggestions"]=[]
     for sugg in suggestions:
