@@ -35,10 +35,27 @@
     <h5>List of Suggestions</h5>
     <div id="app">
       <ul>
-        <li v-for="suggestion in suggestions">
-          {% verbatim %}
-          {{ suggestion.suggest }}
-          {% endverbatim %}
+        {% for suggestion in suggestions %}
+          <li>
+            {{ suggestion.suggestion }}
+            <ul>
+              {% for comment in suggestion.comments %}
+              <li> {{ comment.comment }}</li>
+              {% endfor %}
+            </ul>
+            {% if user.is_authenticated %}
+            <form action="/comment/{{ suggestion.id }}/" method="post">
+                <h5>Comment</h5>
+                {% csrf_token %}
+
+                {{ comment_form }}
+
+                <input type="submit" class="button expanded" value="Submit" />
+
+            </form>
+            {% endif %}
+          </li>
+        {% endfor %}
         </li>
       </ul>
     </div>
@@ -55,11 +72,7 @@
         <input type="submit" class="button expanded" value="Submit" />
 
     </form>
+
     {% endif %}
   </div>
-{% endblock %}
-{% block scripts %}
-<script src="{% static "js/vendor/vue.js" %}"></script>
-<script src="{% static "js/vueapp.js" %}"></script>
-
 {% endblock %}

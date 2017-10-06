@@ -8,5 +8,5 @@ urlpatterns = [
     url(r'register/$',views.register, name='register'),
     url(r'suggestions/$',views.suggestions, name='suggestions'),
     url(r'suggest/$',views.suggest, name='suggest'),
-
+    url(r'^comment/(?P<suggest_id>[0-9]+)/$', views.comment, name='comment'),
 ]

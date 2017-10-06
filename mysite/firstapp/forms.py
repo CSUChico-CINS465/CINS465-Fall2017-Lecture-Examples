@@ -7,6 +7,9 @@ from django.contrib.auth.models import User
 class suggestion_form(forms.Form):
     suggestion = forms.CharField(label='Suggestion', max_length=140, validators=[validate_unicode_slug])
 
+class comment_form(forms.Form):
+    comment = forms.CharField(label='Comment', max_length=140, validators=[validate_unicode_slug])
+
 class LoginForm(AuthenticationForm):
     username=forms.CharField(
         label="Username",

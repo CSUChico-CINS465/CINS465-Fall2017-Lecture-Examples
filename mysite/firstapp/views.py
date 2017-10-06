@@ -9,8 +9,20 @@ from .forms import *
 # Create your views here.
 def index(request):
     form = suggestion_form()
+    c_form = comment_form()
     suggestions = suggestion.objects.all().order_by('-authored')
-    context = {"variable":suggestions, "form":form}
+    to_return = []
+    for suggest in suggestions:
+        data = {}
+        data["suggestion"]=suggest.suggestion
+        data["author"]=suggest.author
+        data["comments"]=[]
+        data["id"]=suggest.id
+        comments = comment.objects.all().filter(suggestion=suggest).order_by('-authored')
+        for comm in comments:
+            data["comments"]+=[{"comment":comm.comment, "author":comm.author}]
+        to_return+=[data]
+    context = {"suggestions":to_return, "form":form, "comment_form":c_form}
     return render(request,"default.html",context)
 
 def suggest(request):
@@ -27,10 +39,52 @@ def suggest(request):
             form=suggestion_form()
     else:
         form = suggestion_form()
+    c_form = comment_form()
     suggestions = suggestion.objects.all().order_by('-authored')
-    context = {"variable":suggestions, "form":form}
+    to_return = []
+    for suggest in suggestions:
+        data = {}
+        data["suggestion"]=suggest.suggestion
+        data["author"]=suggest.author
+        data["comments"]=[]
+        data["id"]=suggest.id
+        comments = comment.objects.all().filter(suggestion=suggest).order_by('-authored')
+        for comm in comments:
+            data["comments"]+=[{"comment":comm.comment, "author":comm.author}]
+        to_return+=[data]
+    context = {"suggestions":to_return, "form":form, "comment_form":c_form}
     return render(request,"default.html",context)
 
+def comment(request,suggest_id):
+    if request.method == 'POST':
+        if request.user.is_authenticated:
+            c_form = comment_form(request.POST)
+            if c_form.is_valid():
+                modentry = comment(
+                    comment=c_form.cleaned_data['comment'],
+                    author=request.user,
+                    suggestion=suggest_id
+                    )
+                modentry.save()
+        else:
+            c_form = comment_form()
+    else:
+        c_form = comment_form()
+    form = suggestion_form()
+    suggestions = suggestion.objects.all().order_by('-authored')
+    to_return = []
+    for suggest in suggestions:
+        data = {}
+        data["suggestion"]=suggest.suggestion
+        data["author"]=suggest.author
+        data["comments"]=[]
+        data["id"]=suggest.id
+        comments = comment.objects.all().filter(suggestion=suggest).order_by('-authored')
+        for comm in comments:
+            data["comments"]+=[{"comment":comm.comment, "author":comm.author}]
+        to_return+=[data]
+    context = {"suggestions":to_return, "form":form, "comment_form":c_form}
+    return render(request,"default.html",context)
 
 def page2(request):
     suggestions = suggestion.objects.all()
@@ -52,7 +106,7 @@ def register(request):
     return render(request,"register.html",context)
 
 def suggestions(request):
-    suggestions = suggestion.objects.all().order_by('authored')
+    suggestions = suggestion.objects.all().order_by('-authored')
     toReturn = {}
     toReturn["suggestions"]=[]
     for sugg in suggestions:
