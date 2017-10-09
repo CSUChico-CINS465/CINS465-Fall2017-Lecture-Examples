@@ -25,7 +25,7 @@ def index(request):
     context = {"suggestions":to_return, "form":form, "comment_form":c_form}
     return render(request,"default.html",context)
 
-def suggest(request):
+def suggestion_view(request):
     if request.method == 'POST':
         if request.user.is_authenticated:
             form = suggestion_form(request.POST)
@@ -55,17 +55,19 @@ def suggest(request):
     context = {"suggestions":to_return, "form":form, "comment_form":c_form}
     return render(request,"default.html",context)
 
-def comment(request,suggest_id):
+def comment_view(request,suggest_id):
     if request.method == 'POST':
         if request.user.is_authenticated:
             c_form = comment_form(request.POST)
+            suggest_instance = suggestion.objects.get(id=suggest_id)
             if c_form.is_valid():
                 modentry = comment(
                     comment=c_form.cleaned_data['comment'],
                     author=request.user,
-                    suggestion=suggest_id
+                    suggestion=suggest_instance
                     )
                 modentry.save()
+                c_form=comment_form()
         else:
             c_form = comment_form()
     else:

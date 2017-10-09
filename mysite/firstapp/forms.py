@@ -8,7 +8,14 @@ class suggestion_form(forms.Form):
     suggestion = forms.CharField(label='Suggestion', max_length=140, validators=[validate_unicode_slug])
 
 class comment_form(forms.Form):
-    comment = forms.CharField(label='Comment', max_length=140, validators=[validate_unicode_slug])
+    comment = forms.CharField(
+        label='Comment',
+        max_length=140,
+        validators=[validate_unicode_slug],
+        widget=forms.TextInput(
+            attrs={'placeholder': 'Add a comment'}
+        )
+    )
 
 class LoginForm(AuthenticationForm):
     username=forms.CharField(

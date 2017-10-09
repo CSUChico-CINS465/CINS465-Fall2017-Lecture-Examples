@@ -21,6 +21,7 @@
   <div class="top-bar-right">
     <ul class="menu">
       {% if user.is_authenticated %}
+      <li><a href="/add_suggest/">Add Suggestion</a></li>
       <li><a href="/logout/">Logout</a></li>
       {% else %}
       <li><a href="/register/">Register</a></li>
@@ -42,16 +43,20 @@
               {% for comment in suggestion.comments %}
               <li> {{ comment.comment }}</li>
               {% endfor %}
+              <li><a href="/comment/{{ suggestion.id }}/">Add Comment</a></li>
             </ul>
+
             {% if user.is_authenticated %}
             <form action="/comment/{{ suggestion.id }}/" method="post">
-                <h5>Comment</h5>
                 {% csrf_token %}
-
-                {{ comment_form }}
-
-                <input type="submit" class="button expanded" value="Submit" />
-
+                <div class="grid-x grid-padding-x">
+                  <div class="large-8 medium-8 small-12 cell">
+                    {{ comment_form.comment }}
+                  </div>
+                  <div class="large-4 medium-4 small-12 cell">
+                    <input type="submit" class="button expanded" value="Submit" />
+                  </div>
+                </div>
             </form>
             {% endif %}
           </li>
