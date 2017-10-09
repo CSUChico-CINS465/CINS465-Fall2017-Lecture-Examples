@@ -35,25 +35,13 @@ def suggestion_view(request):
                     author=request.user
                     )
                 modentry.save()
+                return redirect("/")
         else:
             form=suggestion_form()
     else:
         form = suggestion_form()
-    c_form = comment_form()
-    suggestions = suggestion.objects.all().order_by('-authored')
-    to_return = []
-    for suggest in suggestions:
-        data = {}
-        data["suggestion"]=suggest.suggestion
-        data["author"]=suggest.author
-        data["comments"]=[]
-        data["id"]=suggest.id
-        comments = comment.objects.all().filter(suggestion=suggest).order_by('-authored')
-        for comm in comments:
-            data["comments"]+=[{"comment":comm.comment, "author":comm.author}]
-        to_return+=[data]
-    context = {"suggestions":to_return, "form":form, "comment_form":c_form}
-    return render(request,"default.html",context)
+    context = {"form":form}
+    return render(request,"suggest.html",context)
 
 def comment_view(request,suggest_id):
     if request.method == 'POST':

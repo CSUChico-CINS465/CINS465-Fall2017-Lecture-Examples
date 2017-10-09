@@ -21,7 +21,7 @@
   <div class="top-bar-right">
     <ul class="menu">
       {% if user.is_authenticated %}
-      <li><a href="/add_suggest/">Add Suggestion</a></li>
+      <li><a href="/suggest/">Add Suggestion</a></li>
       <li><a href="/logout/">Logout</a></li>
       {% else %}
       <li><a href="/register/">Register</a></li>
@@ -32,7 +32,7 @@
 </div>
 <div class="grid-x grid-padding-x">
   <!-- <div class="large-4 medium-4 small-12 cell"></div> -->
-  <div class="large-8 medium-8 small-12 cell">
+  <div class="large-8 medium-8 small-12 large-offset-2 medium-offset-2 cell">
     <h5>List of Suggestions</h5>
     <div id="app">
       <ul>
@@ -65,19 +65,5 @@
       </ul>
     </div>
   </div>
-  <div class="large-4 medium-4 small-12 cell">
-
-    {% if user.is_authenticated %}
-    <form action="/suggest/" method="post">
-        <h5>Add a suggestion</h5>
-        {% csrf_token %}
-
-        {{ form }}
-
-        <input type="submit" class="button expanded" value="Submit" />
-
-    </form>
-
-    {% endif %}
-  </div>
+</div>
 {% endblock %}
