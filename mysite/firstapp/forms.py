@@ -6,6 +6,8 @@ from django.contrib.auth.models import User
 
 class suggestion_form(forms.Form):
     suggestion = forms.CharField(label='Suggestion', max_length=140, validators=[validate_unicode_slug])
+    # CHOICES = (('1', 'First',), ('2', 'Second',))
+    # choice_field = forms.ChoiceField(widget=forms.RadioSelect, choices=CHOICES)
 
 class comment_form(forms.Form):
     comment = forms.CharField(

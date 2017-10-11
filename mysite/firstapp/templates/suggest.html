@@ -9,9 +9,7 @@
     <form action="/suggest/" method="post">
         {% csrf_token %}
         <h4 class="text-center">Add Suggestion</h4>
-        {{ form.errors }}
-        {{ form.suggestion.label_tag }}
-        {{ form.suggestion }}
+        {{ form }}
         <input type="submit" class="button expanded" value="Add Suggestion" />
     </form>
   </div>
