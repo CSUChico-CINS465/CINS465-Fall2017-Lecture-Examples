@@ -38,6 +38,7 @@
       <ul>
         {% for suggestion in suggestions %}
           <li>
+            <img src="/media/{{ suggestion.image }}" alt="{{ suggestion.idescription }}" width="100"/>
             {{ suggestion.suggestion }}
             <ul>
               {% for comment in suggestion.comments %}

@@ -18,6 +18,8 @@ def index(request):
     for suggest in suggestions:
         data = {}
         data["suggestion"]=suggest.suggestion
+        data["image"]=suggest.image
+        data["idescription"]=suggest.idescription
         data["author"]=suggest.author
         data["comments"]=[]
         data["id"]=suggest.id
@@ -32,13 +34,9 @@ def index(request):
 def suggestion_view(request):
     if request.method == 'POST':
         if request.user.is_authenticated:
-            form = suggestion_form(request.POST)
+            form = suggestion_form(request.POST, request.FILES)
             if form.is_valid():
-                modentry = suggestion(
-                    suggestion=form.cleaned_data['suggestion'],
-                    author=request.user
-                    )
-                modentry.save()
+                form.save(request)
                 return redirect("/")
         else:
             form=suggestion_form()

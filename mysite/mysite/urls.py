@@ -19,6 +19,8 @@ from django.contrib import admin
 from django.contrib.auth import views
 from firstapp.forms import LoginForm
 
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -30,4 +32,4 @@ urlpatterns = [
         'next_page':'/login'
     }),
     url(r'',include('firstapp.urls')),
-]
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
