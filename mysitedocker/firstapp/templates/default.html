@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Title{% endblock %}
+{% block content %}
+<div class="top-bar">
+  <div class="top-bar-left">
+    <ul class="dropdown menu" data-dropdown-menu>
+      <li class="menu-text">Suggester</li>
+      <!-- <li>
+        <a href="#">One</a>
+        <ul class="menu vertical">
+          <li><a href="#">One</a></li>
+          <li><a href="#">Two</a></li>
+          <li><a href="#">Three</a></li>
+        </ul>
+      </li> -->
+      <li><a href="/">Home</a></li>
+    </ul>
+  </div>
+  <div class="top-bar-right">
+    <ul class="menu">
+      {% if user.is_authenticated %}
+      <li><a href="/suggest/">Add Suggestion</a></li>
+      <li><a href="/logout/">Logout</a></li>
+      {% else %}
+      <li><a href="/register/">Register</a></li>
+      <li><a href="/login/">Log In</a></li>
+      {% endif %}
+    </ul>
+  </div>
+</div>
+<div class="grid-x grid-padding-x">
+  <!-- <div class="large-4 medium-4 small-12 cell"></div> -->
+  <div class="large-8 medium-8 small-12 large-offset-2 medium-offset-2 cell">
+    <h5>List of Suggestions</h5>
+    <div id="app">
+      <ul>
+        {% for suggestion in suggestions %}
+          <li>
+            <img src="/media/{{ suggestion.image }}" alt="{{ suggestion.idescription }}" width="100"/>
+            {{ suggestion.suggestion }}
+            <ul>
+              {% for comment in suggestion.comments %}
+              <li> {{ comment.comment }}</li>
+              {% endfor %}
+              {% if user.is_authenticated %}
+              <li><a href="/comment/{{ suggestion.id }}/">Add Comment</a></li>
+              {% endif %}
+            </ul>
+
+
+          </li>
+        {% endfor %}
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock %}
